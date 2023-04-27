@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class StatsServiceImpl implements StatsService {
-    StatsRepository statsRepository;
+    private StatsRepository statsRepository;
 
     @Override
     public void createEndpointHit(CreateEndpointHitDto createEndpointHitDto) {
