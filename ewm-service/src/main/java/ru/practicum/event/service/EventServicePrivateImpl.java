@@ -157,7 +157,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     public List<EventShortDto> getEventsOwn(int userId, Pageable pageable) {
         findUserByIdAndCheck(userId);
 
-        List<EventFullDto> events= eventRepository
+        List<EventFullDto> events = eventRepository
                 .findAllByInitiatorUserId(userId, pageable)
                 .stream()
                 .map(EventMapper::eventToEventFullDto)

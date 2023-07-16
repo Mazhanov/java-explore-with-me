@@ -8,5 +8,6 @@ public interface RequestService {
     RequestDto createRequest(int userId, int eventId);
 
     RequestDto cancelRequest(int userId, int requestId);
+
     List<RequestDto> getAllRequests(int userId);
 }

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CompilationServicePublicImpl implements CompilationServicePublic {
     private final CompilationRepository compilationRepository;
+
     @Override
     public List<CompilationDto> getAllCompilations(Boolean pinned, Pageable pageable) {
         List<Compilation> compilations;

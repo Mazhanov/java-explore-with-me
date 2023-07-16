@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class EventUtils {
     private final StatRestClient statRestClient;
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
     public void addConfirmedRequestsAndViews(List<EventFullDto> evens, RequestRepository requestRepository,
                                              StatsClient statsClient) {
         addConfirmedRequests(evens, requestRepository);
