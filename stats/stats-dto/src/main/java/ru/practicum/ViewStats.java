@@ -1,12 +1,8 @@
 package ru.practicum;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ViewStats {
@@ -14,4 +10,3 @@ public class ViewStats {
     private String uri;
     private Long hits;
 }
-

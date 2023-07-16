@@ -8,6 +8,7 @@ import ru.practicum.mapper.StatsMapper;
 import ru.practicum.Repository.StatsRepository;
 import ru.practicum.ViewStats;
 
+import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,6 +25,10 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        if (start.isAfter(end)) {
+            throw new ValidationException("the start date cannot be later than the end");
+        }
+
         List<ViewStats> viewStats;
         if (unique) {
             viewStats = statsRepository.getStatsUniqueIp(start, end, uris);
