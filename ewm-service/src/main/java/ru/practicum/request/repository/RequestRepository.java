@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.practicum.request.model.Request;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +19,8 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
     List<Request> findAllByRequesterUserId(int requesterUserId);
 
     @Query("SELECT count(r) FROM Request r " +
-            "WHERE r.event.eventId = :eventId AND r.status = 'CONFIRMED'")
-    int findCountOfEventConfirmedRequests(@Param("eventId") int eventId);
+            "WHERE r.event.eventId = :eventId")
+    int findCountOfEvent(@Param("eventId") int eventId);
 
     @Query("SELECT r FROM Request r " +
             "WHERE r.event.eventId = :eventId AND " +
@@ -33,6 +34,8 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
     );
 
     List<Request> findByEventEventId(int eventEventId);
+
+    List<Request> findByEventEventIdIn(Collection<Integer> events);
 
 
     @Query("SELECT r FROM Request r " +

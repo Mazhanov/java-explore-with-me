@@ -53,11 +53,16 @@ public class EventUtils {
             }
 
             requestsCountMap.put(eventId, requestsCountMap.get(eventId) + 1);
+
         });
 
         events.forEach(event -> {
             if (requestsCountMap.containsKey(event.getId())) {
                 event.setConfirmedRequests(requestsCountMap.get(event.getId()));
+            }
+
+            if (event.getConfirmedRequests() == null) {
+                event.setConfirmedRequests(0);
             }
         });
     }
@@ -72,23 +77,23 @@ public class EventUtils {
                 .filter(event -> event.getPublishedOn() != null)
                 .map(EventFullDto::getPublishedOn)
                 .min(LocalDateTime::compareTo).orElseGet(LocalDateTime::now);
-        log.info("LocalDateTime start {}", start);
+
         StringBuilder builder = new StringBuilder();
         for (Integer uri : eventsId) {
             builder.append("/events/" + uri + ",");
         }
-        log.info(" StringBuilder builder {}", builder);
+
         ResponseEntity<Object[]> response = statRestClient.get(start, LocalDateTime.now(), true, builder.toString());
-        log.info(" SResponseEntity<Object[]> response {}", response);
+
         Map<Long, Long> resultMap = new HashMap<>();
 
         if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
             Object[] object = response.getBody();
-            log.info("Object[] object {}", object);
+
             List<ViewStats> collect = Arrays.stream(object).map(o -> objectMapper.convertValue(o, ViewStats.class))
                     .filter(dto -> dto.getApp().equals("ewm-service"))
                     .collect(Collectors.toList());
-            log.info("List<ViewStats> collect {}", collect);
+
             for (ViewStats dto : collect) {
                 long id = NumberUtils.toLong(StringUtils.substringAfterLast(dto.getUri(), "/"));
                 if (id > 0) {
@@ -96,7 +101,7 @@ public class EventUtils {
                 }
             }
         }
-        log.info("Map<Long, Long> resultMap {}", resultMap);
+
         if (resultMap.size() > 0) {
             for (EventFullDto event : events) {
                 event.setViews(resultMap.getOrDefault((long) event.getId(), 0L));

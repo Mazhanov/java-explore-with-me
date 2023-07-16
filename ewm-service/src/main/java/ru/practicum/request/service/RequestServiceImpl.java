@@ -45,7 +45,7 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException();
         }
 
-        int countRequests = requestRepository.findCountRequests(eventId);
+        int countRequests = requestRepository.findCountOfEvent(eventId);
 
         if (event.getParticipantLimit() != 0 && countRequests >= event.getParticipantLimit()) {
             throw new ConflictException();
