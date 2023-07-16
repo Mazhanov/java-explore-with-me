@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import ru.practicum.StatsClient;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.repository.CategoryRepository;
 import ru.practicum.core.exception.ConflictException;
@@ -32,7 +31,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EventServiceAdminImpl implements EventServiceAdmin {
     private final EventRepository eventRepository;
-    private final StatsClient statsClient;
     private final RequestRepository requestRepository;
     private final CategoryRepository categoryRepository;
     private final EventUtils eventUtils;
@@ -64,7 +62,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
                 .collect(Collectors.toList());
 
 
-        eventUtils.addConfirmedRequestsAndViews(events, requestRepository, statsClient);
+        eventUtils.addConfirmedRequestsAndViews(events, requestRepository);
 
         return events;
     }
@@ -108,7 +106,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         log.info("4");
         EventFullDto eventFullDto = EventMapper.eventToEventFullDto(eventRepository.save(event));
         log.info("5");
-        eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository, statsClient);
+        eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository);
         log.info("6");
         return eventFullDto;
     }

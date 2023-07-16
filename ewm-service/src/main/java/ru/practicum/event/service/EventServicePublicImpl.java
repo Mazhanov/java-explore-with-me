@@ -55,7 +55,7 @@ public class EventServicePublicImpl implements EventServicePublic {
                 .map(EventMapper::eventToEventFullDto)
                 .collect(Collectors.toList());
 
-        eventUtils.addConfirmedRequestsAndViews(events, requestRepository, statsClient);
+        eventUtils.addConfirmedRequestsAndViews(events, requestRepository);
 
         if (sort == EventSort.VIEWS) {
             events.sort((event1, event2) -> Long.compare(event2.getViews(), event1.getViews()));
@@ -79,7 +79,7 @@ public class EventServicePublicImpl implements EventServicePublic {
 
         EventFullDto eventFullDto = EventMapper.eventToEventFullDto(event);
 
-        eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository, statsClient);
+        eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository);
 
         return eventFullDto;
     }

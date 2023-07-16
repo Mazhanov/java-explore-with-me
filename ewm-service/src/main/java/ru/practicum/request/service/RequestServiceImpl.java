@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.core.exception.ConflictException;
 import ru.practicum.core.exception.ObjectNotFoundException;
+import ru.practicum.event.dto.EventFullDto;
+import ru.practicum.event.mapper.EventMapper;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.EventState;
 import ru.practicum.event.repository.EventRepository;
+import ru.practicum.event.utils.EventUtils;
 import ru.practicum.request.dto.RequestDto;
 import ru.practicum.request.mapper.RequestMapper;
 import ru.practicum.request.model.Request;
@@ -27,6 +30,7 @@ public class RequestServiceImpl implements RequestService {
     private final RequestRepository requestRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+    private final EventUtils eventUtils;
 
     @Override
     public RequestDto createRequest(int userId, int eventId) {
@@ -45,18 +49,24 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException();
         }
 
-        int countRequests = requestRepository.findCountOfEvent(eventId);
+        int countRequests = requestRepository.findCountRequests(eventId);
 
-        if (event.getParticipantLimit() != 0 && countRequests >= event.getParticipantLimit()) {
+        EventFullDto eventFullDto = EventMapper.eventToEventFullDto(event);
+        eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository);
+
+        if (event.getParticipantLimit() != 0 && event.getParticipantLimit() == countRequests) {
             throw new ConflictException();
         }
 
-        RequestStatus status = RequestStatus.PENDING;
+        RequestStatus status;
 
-        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
+        if (event.getRequestModeration().equals(false) || event.getParticipantLimit() == 0) {
             status = RequestStatus.CONFIRMED;
+        } else {
+            status = RequestStatus.PENDING;
         }
-
+        log.info("event {}", event);
+        log.info("status {}", status);
         Request request = new Request(event, user, LocalDateTime.now(), status);
 
         return RequestMapper.requestToRequestDto(requestRepository.save(request));

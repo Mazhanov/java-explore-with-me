@@ -37,5 +37,5 @@ public class EventUpdate {
     @PositiveOrZero
     private Integer participantLimit; // Ограничение на количество участников. Значение 0 - означает отсутствие ограничения
 
-    private Boolean requestModeration = true; // Нужна ли пре-модерация заявок на участие
+    private Boolean requestModeration; // Нужна ли пре-модерация заявок на участие
 }

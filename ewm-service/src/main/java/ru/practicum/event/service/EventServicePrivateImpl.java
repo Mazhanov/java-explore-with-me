@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.practicum.StatsClient;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.repository.CategoryRepository;
 import ru.practicum.core.exception.ConflictException;
@@ -37,7 +36,6 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
-    private final StatsClient statsClient;
     private final RequestRepository requestRepository;
     private final EventUtils eventUtils;
 
@@ -90,7 +88,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
         EventFullDto eventFullDto = EventMapper.eventToEventFullDto(eventRepository.save(event));
 
-        eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository, statsClient);
+        eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository);
 
         return eventFullDto;
     }
@@ -163,7 +161,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
                 .map(EventMapper::eventToEventFullDto)
                 .collect(Collectors.toList());
 
-        eventUtils.addConfirmedRequestsAndViews(events, requestRepository, statsClient);
+        eventUtils.addConfirmedRequestsAndViews(events, requestRepository);
 
         return events
                 .stream()
@@ -182,7 +180,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
         EventFullDto eventFullDto = EventMapper.eventToEventFullDto(event);
 
-        eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository, statsClient);
+        eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository);
 
         return eventFullDto;
     }

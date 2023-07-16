@@ -8,7 +8,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.practicum.StatsClient;
 import ru.practicum.ViewStats;
 import ru.practicum.core.StatRestClient;
 import ru.practicum.event.dto.EventFullDto;
@@ -26,8 +25,7 @@ public class EventUtils {
     private final StatRestClient statRestClient;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public void addConfirmedRequestsAndViews(List<EventFullDto> evens, RequestRepository requestRepository,
-                                             StatsClient statsClient) {
+    public void addConfirmedRequestsAndViews(List<EventFullDto> evens, RequestRepository requestRepository) {
         addConfirmedRequests(evens, requestRepository);
         addViews(evens);
     }
@@ -94,6 +92,7 @@ public class EventUtils {
                     .filter(dto -> dto.getApp().equals("ewm-service"))
                     .collect(Collectors.toList());
 
+            
             for (ViewStats dto : collect) {
                 long id = NumberUtils.toLong(StringUtils.substringAfterLast(dto.getUri(), "/"));
                 if (id > 0) {
