@@ -92,7 +92,6 @@ public class EventUtils {
                     .filter(dto -> dto.getApp().equals("ewm-service"))
                     .collect(Collectors.toList());
 
-            
             for (ViewStats dto : collect) {
                 long id = NumberUtils.toLong(StringUtils.substringAfterLast(dto.getUri(), "/"));
                 if (id > 0) {
