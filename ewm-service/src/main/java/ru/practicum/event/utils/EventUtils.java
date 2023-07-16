@@ -1,6 +1,5 @@
 package ru.practicum.event.utils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,14 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.practicum.StatsClient;
 import ru.practicum.ViewStats;
-import ru.practicum.core.DateTime;
 import ru.practicum.core.StatRestClient;
 import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.request.model.Request;
 import ru.practicum.request.repository.RequestRepository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,8 +25,6 @@ import java.util.stream.Collectors;
 public class EventUtils {
     private final StatRestClient statRestClient;
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DateTime.DATE_TIME_FORMAT);
-
     public void addConfirmedRequestsAndViews(List<EventFullDto> evens, RequestRepository requestRepository,
                                              StatsClient statsClient) {
         addConfirmedRequests(evens, requestRepository);

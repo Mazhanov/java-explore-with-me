@@ -1,12 +1,10 @@
 package ru.practicum.event.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.core.pagination.PaginationMapper;
 import ru.practicum.event.dto.*;
-import ru.practicum.event.model.EventState;
 import ru.practicum.event.service.EventServiceAdmin;
 
 import javax.validation.Valid;

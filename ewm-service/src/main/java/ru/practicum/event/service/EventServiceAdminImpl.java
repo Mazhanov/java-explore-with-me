@@ -104,25 +104,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             }
         }
 
-        /*if (eventUpdate.getEventStateAdminAction() != null) {
-            if (eventUpdate.getEventStateAdminAction().equals(EventStateAdminAction.PUBLISH_EVENT)
-                    && (event.getState().equals(EventState.CANCELED) || event.getState().equals(EventState.PUBLISHED))) {
-                throw new ConflictException();
-            }
-
-            if (eventUpdate.getEventStateAdminAction().equals(EventStateAdminAction.REJECT_EVENT) &&
-                    event.getState().equals(EventState.PUBLISHED)) {
-                throw new ConflictException();
-            }
-
-            if (eventUpdate.getEventStateAdminAction().equals(EventStateAdminAction.PUBLISH_EVENT)) {
-                event.setState(EventState.PUBLISHED);
-            } else {
-                event.setState(EventState.CANCELED);
-            }
-        }*/
-
-        updatsEvent(event, eventUpdate);
+        updateEvent(event, eventUpdate);
         log.info("4");
         EventFullDto eventFullDto = EventMapper.eventToEventFullDto(eventRepository.save(event));
         log.info("5");
@@ -147,7 +129,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         }
     }
 
-    private void updatsEvent(Event event, EventUpdateAdminRequest eventUpdate) {
+    private void updateEvent(Event event, EventUpdateAdminRequest eventUpdate) {
         if (eventUpdate.getTitle() != null) {
             event.setTitle(eventUpdate.getTitle());
         }

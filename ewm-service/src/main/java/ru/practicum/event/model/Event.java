@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Formula;
 import ru.practicum.category.model.Category;
 import ru.practicum.core.DateTime;
 import ru.practicum.user.model.User;
