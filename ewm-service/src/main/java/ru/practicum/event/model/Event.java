@@ -1,9 +1,7 @@
 package ru.practicum.event.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.category.model.Category;
 import ru.practicum.core.DateTime;
 import ru.practicum.user.model.User;
@@ -13,9 +11,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "event", schema = "public")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Event {
     @Id
     @Column(name = "event_id")

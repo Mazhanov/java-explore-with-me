@@ -21,7 +21,7 @@ public class CompilationServicePublicImpl implements CompilationServicePublic {
     public List<CompilationDto> getAllCompilations(Boolean pinned, Pageable pageable) {
         List<Compilation> compilations;
 
-        if (pinned == null || pinned.equals(false)) {
+        if (pinned == null || !pinned) {
             compilations = compilationRepository.findAll(pageable).toList();
         } else {
             compilations = compilationRepository.findAllByPinned(pinned, pageable);

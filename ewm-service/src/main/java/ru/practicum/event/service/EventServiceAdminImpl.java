@@ -51,7 +51,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
 
         if (rangeStart != null && rangeEnd != null) {
             if (rangeStart.isAfter(rangeEnd)) {
-                throw new ConflictException();
+                throw new ConflictException("The start cannot be before the end");
             }
         }
 
@@ -91,7 +91,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         if (eventUpdate.getStateAction() != null) {
 
             if (event.getState() != EventState.PENDING) {
-                throw new ConflictException();
+                throw new ConflictException("You cannot change an event under review");
             }
 
             if (eventUpdate.getStateAction().equals(EventStateAdminAction.PUBLISH_EVENT)) {
@@ -103,11 +103,11 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         }
 
         updateEvent(event, eventUpdate);
-        log.info("4");
+
         EventFullDto eventFullDto = EventMapper.eventToEventFullDto(eventRepository.save(event));
-        log.info("5");
+
         eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository);
-        log.info("6");
+
         return eventFullDto;
     }
 

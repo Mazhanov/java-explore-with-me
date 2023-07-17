@@ -38,15 +38,15 @@ public class RequestServiceImpl implements RequestService {
         Event event = findEventByIdAndCheck(eventId);
 
         requestRepository.findByRequesterUserIdAndEventEventId(userId, eventId).ifPresent(request -> {
-            throw new ConflictException();
+            throw new ConflictException("You cannot add a repeat request");
         });
 
         if (event.getInitiator().getUserId() == userId) {
-            throw new ConflictException();
+            throw new ConflictException("The initiator of the event cannot add a request to participate in his event");
         }
 
         if (event.getState() != EventState.PUBLISHED) {
-            throw new ConflictException();
+            throw new ConflictException("You cannot participate in an unpublished event");
         }
 
         int countRequests = requestRepository.findCountRequests(eventId);
@@ -55,12 +55,12 @@ public class RequestServiceImpl implements RequestService {
         eventUtils.addConfirmedRequestsAndViews(List.of(eventFullDto), requestRepository);
 
         if (event.getParticipantLimit() != 0 && event.getParticipantLimit() == countRequests) {
-            throw new ConflictException();
+            throw new ConflictException("The event has reached the limit of participation requests");
         }
 
         RequestStatus status;
 
-        if (event.getRequestModeration().equals(false) || event.getParticipantLimit() == 0) {
+        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
             status = RequestStatus.CONFIRMED;
         } else {
             status = RequestStatus.PENDING;

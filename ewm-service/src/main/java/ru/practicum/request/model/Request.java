@@ -1,8 +1,8 @@
 package ru.practicum.request.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
+import ru.practicum.core.DateTime;
 import ru.practicum.event.model.Event;
 import ru.practicum.user.model.User;
 
@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "request")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Request {
     @Id
     @Column(name = "request_id")
@@ -28,6 +30,7 @@ public class Request {
     @JoinColumn(nullable = false, name = "requester_id")
     private User requester;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateTime.DATE_TIME_FORMAT)
     private LocalDateTime created;
 
     @Enumerated(EnumType.STRING)

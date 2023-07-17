@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CategoryCreateDto {
     @NotBlank(message = "name cannot be missing")
-    @NotNull(message = "name cannot be missing")
     @Size(max = 50)
     private String name;
 }

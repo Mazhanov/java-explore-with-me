@@ -1,16 +1,16 @@
 package ru.practicum.category.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "category")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Category {
     @Id
     @Column(name = "category_id")
@@ -18,8 +18,4 @@ public class Category {
     private Integer categoryId;
 
     private String name;
-
-    public Category(String name) {
-        this.name = name;
-    }
 }

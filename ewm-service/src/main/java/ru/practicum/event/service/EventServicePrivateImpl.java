@@ -56,11 +56,11 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (eventUpdate.getEventDate() != null) {
             checkDate(now, eventUpdate.getEventDate());
         }
-        log.info("Event eventUpdate {}", eventUpdate);
+
         Event event = findEventByIdAndCheck(eventId);
 
         if (event.getState().equals(EventState.PUBLISHED)) {
-            throw new ConflictException();
+            throw new ConflictException("You can only change canceled events or events in the state of waiting for moderation");
         }
 
         findUserByIdAndCheck(userId);
@@ -100,13 +100,13 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         Event event = findEventByIdAndCheck(eventId);
 
         if (event.getState() != EventState.PUBLISHED) {
-            throw new ConflictException();
+            throw new ConflictException("The status can be changed only for applications that are in the waiting state");
         }
 
         int eventConfirmedRequests = requestRepository.findCountRequests(eventId);
 
         if (event.getParticipantLimit() != 0 && eventConfirmedRequests == event.getParticipantLimit()) {
-            throw new ConflictException();
+            throw new ConflictException("The limit on applications for this event has been reached");
         }
 
         List<Request> requests = requestRepository.findRequestsForUpdating(
@@ -131,11 +131,12 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         EventRequestStatusUpdateResult eventRequest = new EventRequestStatusUpdateResult(Collections.emptyList(),
                 Collections.emptyList());
 
+        List<Request> requestsForSave = new ArrayList<>();
 
         requests.forEach(request -> {
             if (eventConfirmedRequests < event.getParticipantLimit()) {
                 request.setStatus(RequestStatus.CONFIRMED);
-                requestRepository.save(request);
+                requestsForSave.add(request);
                 List<RequestDto> newRequests = new ArrayList<>(eventRequest.getConfirmedRequests());
                 newRequests.add(RequestMapper.requestToRequestDto(request));
                 eventRequest.setConfirmedRequests(newRequests);
@@ -147,6 +148,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
                 eventRequest.setRejectedRequests(newRequests);
             }
         });
+
+        requestRepository.saveAll(requestsForSave);
 
         return eventRequest;
     }
@@ -191,7 +194,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         Event event = findEventByIdAndCheck(eventId);
 
         if (!event.getInitiator().getUserId().equals(userId)) {
-            throw new ConflictException();
+            throw new ConflictException("Only the owner of the event can receive requests");
         }
 
         List<Request> requests = requestRepository.findByEventEventId(eventId);

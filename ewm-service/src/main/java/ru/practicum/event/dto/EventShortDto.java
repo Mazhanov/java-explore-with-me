@@ -1,10 +1,7 @@
 package ru.practicum.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.core.DateTime;
 import ru.practicum.user.dto.UserShortDto;
@@ -15,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class EventShortDto {
     private Integer id;
     private String title;
@@ -28,15 +26,4 @@ public class EventShortDto {
     private UserShortDto initiator;
     private Boolean paid;
     private Long views;
-
-    public EventShortDto(Integer id, String title, String annotation, CategoryDto category,
-                         LocalDateTime eventDate, UserShortDto initiator, Boolean paid) {
-        this.id = id;
-        this.title = title;
-        this.annotation = annotation;
-        this.category = category;
-        this.eventDate = eventDate;
-        this.initiator = initiator;
-        this.paid = paid;
-    }
 }

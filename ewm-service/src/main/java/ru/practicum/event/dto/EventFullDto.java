@@ -2,6 +2,7 @@ package ru.practicum.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.category.dto.CategoryDto;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class EventFullDto {
     private int id;
     private CategoryDto category;
@@ -37,24 +39,4 @@ public class EventFullDto {
     private Boolean requestModeration; // Нужна ли пре-модерация заявок на участие
     private Integer confirmedRequests; // Количество одобренных заявок на участие в данном событии
     private Long views; // Количество просмотрев события
-
-    public EventFullDto(int id, CategoryDto category, UserShortDto initiator, LocalDateTime createdOn,
-                        LocalDateTime publishedOn, String title, String annotation, String description,
-                        LocalDateTime eventDate, Location location, EventState state, Boolean paid,
-                        Integer participantLimit, Boolean requestModeration) {
-        this.id = id;
-        this.category = category;
-        this.initiator = initiator;
-        this.createdOn = createdOn;
-        this.publishedOn = publishedOn;
-        this.title = title;
-        this.annotation = annotation;
-        this.description = description;
-        this.eventDate = eventDate;
-        this.location = location;
-        this.state = state;
-        this.paid = paid;
-        this.participantLimit = participantLimit;
-        this.requestModeration = requestModeration;
-    }
 }

@@ -1,5 +1,6 @@
 package ru.practicum.event.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
@@ -15,43 +16,61 @@ import ru.practicum.user.model.User;
 
 import java.time.LocalDateTime;
 
+@UtilityClass
 public class EventMapper {
-    public static Event eventCreateToEvent(EventCreateDto eventDto, User user, Category category, LocalDateTime dateTime) {
+    public Event eventCreateToEvent(EventCreateDto eventDto, User user, Category category, LocalDateTime dateTime) {
         return new Event(category, user, dateTime, eventDto.getTitle(), eventDto.getAnnotation(),
                 eventDto.getDescription(), eventDto.getEventDate(), eventDto.getLocation().getLat(),
                 eventDto.getLocation().getLon(), EventState.PENDING, eventDto.getPaid(),
                 eventDto.getParticipantLimit(), eventDto.getRequestModeration());
     }
 
-    public static EventFullDto eventToEventFullDto(Event event) {
-        return new EventFullDto(event.getEventId(), CategoryMapper.toCategoryDto(event.getCategory()),
-                UserMapper.toUserShortDto(event.getInitiator()), event.getCreatedOn(), event.getPublishedOn(),
-                event.getTitle(), event.getAnnotation(), event.getDescription(), event.getEventDate(),
-                toLocation(event.getLatitude(), event.getLongitude()), event.getState(), event.getPaid(),
-                event.getParticipantLimit(), event.getRequestModeration());
+    public EventFullDto eventToEventFullDto(Event event) {
+        return EventFullDto.builder()
+                .id(event.getEventId())
+                .category(CategoryMapper.toCategoryDto(event.getCategory()))
+                .initiator(UserMapper.toUserShortDto(event.getInitiator()))
+                .createdOn(event.getCreatedOn())
+                .publishedOn(event.getPublishedOn())
+                .title(event.getTitle())
+                .annotation(event.getAnnotation())
+                .description(event.getDescription())
+                .eventDate(event.getEventDate())
+                .location(toLocation(event.getLatitude(), event.getLongitude()))
+                .state(event.getState())
+                .paid(event.getPaid())
+                .participantLimit(event.getParticipantLimit())
+                .requestModeration(event.getRequestModeration())
+                .build();
     }
 
-    public static EventShortDto eventFullDtoToEventShotDto(EventFullDto eventDto) {
+    public EventShortDto eventFullDtoToEventShotDto(EventFullDto eventDto) {
         return new EventShortDto(eventDto.getId(), eventDto.getTitle(), eventDto.getAnnotation(),
                 eventDto.getCategory(), eventDto.getConfirmedRequests(), eventDto.getEventDate(),
                 eventDto.getInitiator(), eventDto.getPaid(), eventDto.getViews());
     }
 
-    public static EventShortDto eventToEventShotDto(Event event) {
-        return new EventShortDto(event.getEventId(), event.getTitle(), event.getAnnotation(),
-                categoryToCategoryDro(event.getCategory()), event.getEventDate(),
-                userToUserShortDto(event.getInitiator()), event.getPaid());
+    public EventShortDto eventToEventShotDto(Event event) {
+        return EventShortDto.builder()
+                .id(event.getEventId())
+                .title(event.getTitle())
+                .annotation(event.getAnnotation())
+                .category(categoryToCategoryDro(event.getCategory()))
+                .eventDate(event.getEventDate())
+                .initiator(userToUserShortDto(event.getInitiator()))
+                .paid(event.getPaid())
+                .build();
     }
 
-    private static CategoryDto categoryToCategoryDro(Category category) {
+    private CategoryDto categoryToCategoryDro(Category category) {
         return CategoryMapper.toCategoryDto(category);
     }
 
-    private static UserShortDto userToUserShortDto(User user) {
+    private UserShortDto userToUserShortDto(User user) {
         return UserMapper.toUserShortDto(user);
     }
 
-    private static Location toLocation(float lat, float lot) {
+    private Location toLocation(float lat, float lot) {
         return new Location(lat, lot);
     }
 }

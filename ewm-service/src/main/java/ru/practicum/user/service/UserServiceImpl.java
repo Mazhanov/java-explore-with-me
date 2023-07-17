@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<UserDto> getAllUsers(List<Integer> userIds, Pageable pageable) {

@@ -1,5 +1,6 @@
 package ru.practicum.compilation.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.compilation.dto.CompilationCreateDto;
 import ru.practicum.compilation.dto.CompilationDto;
 import ru.practicum.compilation.model.Compilation;
@@ -10,12 +11,16 @@ import ru.practicum.event.model.Event;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class CompilationMapper {
-    public static Compilation compilationCreateDtoToCompilation(CompilationCreateDto compilationDto) {
-        return new Compilation(compilationDto.getPinned(), compilationDto.getTitle());
+    public Compilation compilationCreateDtoToCompilation(CompilationCreateDto compilationDto) {
+        return Compilation.builder()
+                .pinned(compilationDto.getPinned())
+                .title(compilationDto.getTitle())
+                .build();
     }
 
-    public static CompilationDto compilationToCompilationDto(Compilation compilation) {
+    public CompilationDto compilationToCompilationDto(Compilation compilation) {
         if (compilation.getEvents() != null) {
             return new CompilationDto(compilation.getId(), compilation.getPinned(), compilation.getTitle(),
                     eventToEventShotDto(compilation.getEvents()));
@@ -25,7 +30,7 @@ public class CompilationMapper {
 
     }
 
-    private static Set<EventShortDto> eventToEventShotDto(Set<Event> events) {
+    private Set<EventShortDto> eventToEventShotDto(Set<Event> events) {
         return events
                 .stream()
                 .map(EventMapper::eventToEventShotDto)

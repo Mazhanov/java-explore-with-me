@@ -7,10 +7,12 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "compilation")
+@Builder
 public class Compilation {
     @Id
     @Column(name = "compilation_id")
@@ -21,14 +23,9 @@ public class Compilation {
 
     private String title;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany()
     @JoinTable(name = "event_compilation",
             joinColumns = @JoinColumn(name = "compilation_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id"))
     private Set<Event> events;
-
-    public Compilation(Boolean pinned, String title) {
-        this.pinned = pinned;
-        this.title = title;
-    }
 }

@@ -15,12 +15,10 @@ import javax.validation.constraints.Size;
 public class UserCreateDto {
 
     @NotBlank(message = "name cannot be missing")
-    @NotNull(message = "name cannot be missing")
     @Size(min = 2, max = 250)
     private String name;
 
     @NotBlank(message = "email cannot be missing")
-    @NotNull(message = "email cannot be missing")
     @Email(message = "email is incorrect")
     @Size(min = 6, max = 254)
     private String email;

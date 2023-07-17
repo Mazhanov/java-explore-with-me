@@ -10,7 +10,6 @@ import ru.practicum.request.service.RequestService;
 
 import java.util.List;
 
-@Validated
 @RestController
 @RequestMapping("/users/{userId}/requests")
 @RequiredArgsConstructor
@@ -22,18 +21,25 @@ public class RequestController {
     @ResponseStatus(HttpStatus.CREATED)
     public RequestDto createRequest(@PathVariable(name = "userId") int userId,
                                     @RequestParam(name = "eventId") int eventId) {
+        log.info("POST, /users/{userId}/requests, userId = {}, eventId = {}", userId, eventId);
         RequestDto request = requestService.createRequest(userId, eventId);
-        log.info("Create request {}", request);
+        log.info("new request {}", request);
         return request;
     }
 
     @PatchMapping(path = "/{requestId}/cancel")
     public RequestDto cancelRequest(@PathVariable int userId, @PathVariable int requestId) {
-        return requestService.cancelRequest(userId, requestId);
+        log.info("PATCH, /users/{userId}/requests/{requestId}/cancel, userId = {}, requestId = {}", userId, requestId);
+        RequestDto requestDto = requestService.cancelRequest(userId, requestId);
+        log.info("Request update {}", requestDto);
+        return requestDto;
     }
 
     @GetMapping
     public List<RequestDto> getAllRequests(@PathVariable int userId) {
-        return requestService.getAllRequests(userId);
+        log.info("GET, /users/{userId}/requests, userId = {}", userId);
+        List<RequestDto> requestDto = requestService.getAllRequests(userId);
+        log.info("requests received = {}", requestDto);
+        return requestDto;
     }
 }

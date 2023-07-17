@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-    CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public CategoryDto createCategory(CategoryCreateDto categoryCreateDto) {
