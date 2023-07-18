@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
+import ru.practicum.comment.mapper.CommentMapper;
 import ru.practicum.event.dto.EventCreateDto;
 import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.event.dto.EventShortDto;
@@ -15,6 +16,7 @@ import ru.practicum.user.mapper.UserMapper;
 import ru.practicum.user.model.User;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class EventMapper {
@@ -37,7 +39,7 @@ public class EventMapper {
     }
 
     public EventFullDto eventToEventFullDto(Event event) {
-        return EventFullDto.builder()
+        EventFullDto eventFullDto = EventFullDto.builder()
                 .id(event.getEventId())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
@@ -53,6 +55,15 @@ public class EventMapper {
                 .participantLimit(event.getParticipantLimit())
                 .requestModeration(event.getRequestModeration())
                 .build();
+
+        if (event.getComments() != null) {
+            eventFullDto.setComments(event.getComments()
+                    .stream()
+                    .map(CommentMapper::commentToCommentShotDto)
+                    .collect(Collectors.toList()));
+        }
+
+        return eventFullDto;
     }
 
     public EventShortDto eventFullDtoToEventShotDto(EventFullDto eventDto) {

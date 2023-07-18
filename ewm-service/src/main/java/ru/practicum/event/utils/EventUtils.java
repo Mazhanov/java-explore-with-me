@@ -25,9 +25,9 @@ public class EventUtils {
     private final StatRestClient statRestClient;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public void addConfirmedRequestsAndViews(List<EventFullDto> evens, RequestRepository requestRepository) {
-        addConfirmedRequests(evens, requestRepository);
-        addViews(evens);
+    public void addConfirmedRequestsAndViews(List<EventFullDto> events, RequestRepository requestRepository) {
+        addConfirmedRequests(events, requestRepository);
+        addViews(events);
     }
 
     private void addConfirmedRequests(List<EventFullDto> events, RequestRepository requestRepository) {

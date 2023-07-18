@@ -6,11 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.category.dto.CategoryDto;
+import ru.practicum.comment.dto.CommentShotDto;
 import ru.practicum.core.DateTime;
 import ru.practicum.event.model.EventState;
 import ru.practicum.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -39,4 +41,5 @@ public class EventFullDto {
     private Boolean requestModeration; // Нужна ли пре-модерация заявок на участие
     private Integer confirmedRequests; // Количество одобренных заявок на участие в данном событии
     private Long views; // Количество просмотрев события
+    private List<CommentShotDto> comments;
 }

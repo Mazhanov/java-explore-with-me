@@ -3,11 +3,13 @@ package ru.practicum.event.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.category.model.Category;
+import ru.practicum.comment.model.Comment;
 import ru.practicum.core.DateTime;
 import ru.practicum.user.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "event", schema = "public")
@@ -60,4 +62,8 @@ public class Event {
 
     @Column(name = "request_moderation")
     private Boolean requestModeration; // Нужна ли пре-модерация заявок на участие
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
+    private List<Comment> comments;
 }
