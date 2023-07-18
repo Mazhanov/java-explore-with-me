@@ -2,12 +2,12 @@ package ru.practicum.category.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.service.CategoryService;
 import ru.practicum.core.pagination.PaginationMapper;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping(path = "/categories")
 @AllArgsConstructor
 @Slf4j
-@Valid
+@Validated
 public class CategoryControllerPublic {
     private final CategoryService categoryService;
 

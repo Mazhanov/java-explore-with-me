@@ -60,23 +60,4 @@ public class Event {
 
     @Column(name = "request_moderation")
     private Boolean requestModeration; // Нужна ли пре-модерация заявок на участие
-
-    public Event(Category category, User initiator, LocalDateTime createdOn, String title,
-                 String annotation, String description, LocalDateTime eventDate, Float latitude, Float longitude,
-                 EventState state, Boolean paid, Integer participantLimit, Boolean requestModeration) {
-        this.category = category;
-        this.initiator = initiator;
-        this.createdOn = createdOn;
-        this.publishedOn = null;
-        this.title = title;
-        this.annotation = annotation;
-        this.description = description;
-        this.eventDate = eventDate;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.state = state;
-        this.paid = paid;
-        this.participantLimit = participantLimit;
-        this.requestModeration = requestModeration;
-    }
 }

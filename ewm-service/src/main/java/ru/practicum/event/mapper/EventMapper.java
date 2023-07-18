@@ -19,10 +19,21 @@ import java.time.LocalDateTime;
 @UtilityClass
 public class EventMapper {
     public Event eventCreateToEvent(EventCreateDto eventDto, User user, Category category, LocalDateTime dateTime) {
-        return new Event(category, user, dateTime, eventDto.getTitle(), eventDto.getAnnotation(),
-                eventDto.getDescription(), eventDto.getEventDate(), eventDto.getLocation().getLat(),
-                eventDto.getLocation().getLon(), EventState.PENDING, eventDto.getPaid(),
-                eventDto.getParticipantLimit(), eventDto.getRequestModeration());
+        return Event.builder()
+                .category(category)
+                .initiator(user)
+                .createdOn(dateTime)
+                .title(eventDto.getTitle())
+                .annotation(eventDto.getAnnotation())
+                .description(eventDto.getDescription())
+                .eventDate(eventDto.getEventDate())
+                .latitude(eventDto.getLocation().getLat())
+                .longitude(eventDto.getLocation().getLon())
+                .state(EventState.PENDING)
+                .paid(eventDto.getPaid())
+                .participantLimit(eventDto.getParticipantLimit())
+                .requestModeration(eventDto.getRequestModeration())
+                .build();
     }
 
     public EventFullDto eventToEventFullDto(Event event) {

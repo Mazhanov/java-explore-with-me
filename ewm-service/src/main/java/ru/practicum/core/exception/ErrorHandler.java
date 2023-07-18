@@ -100,7 +100,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiError handleException(final Exception exception) {
+    public ApiError handleThrowable(final Throwable exception) {
         log.error("500 {}", exception.getMessage(), exception);
         return new ApiError(
                 exception.getMessage(),

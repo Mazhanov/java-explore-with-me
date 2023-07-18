@@ -11,7 +11,6 @@ import javax.validation.ValidationException;
 
 @RestControllerAdvice
 @Slf4j
-@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -29,7 +28,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleException(final Exception exception) {
+    public ErrorResponse handleThrowable(final Throwable exception) {
         log.error("500 {}", exception.getMessage(), exception);
         return new ErrorResponse(exception.getMessage());
     }

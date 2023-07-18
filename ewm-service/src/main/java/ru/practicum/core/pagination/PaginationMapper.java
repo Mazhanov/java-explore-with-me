@@ -1,13 +1,12 @@
 package ru.practicum.core.pagination;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public class PaginationMapper {
-    public static Pageable toPageable(Integer from, Integer size) {
+    public Pageable toPageable(Integer from, Integer size) {
 
         int page = from / size;
         return PageRequest.of(page, size);
