@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.practicum.ViewStats;
+import ru.practicum.comment.mapper.CommentMapper;
+import ru.practicum.comment.model.Comment;
+import ru.practicum.comment.repository.CommentRepository;
 import ru.practicum.core.StatRestClient;
 import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.request.model.Request;
@@ -23,11 +26,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EventUtils {
     private final StatRestClient statRestClient;
+    private final CommentRepository commentRepository;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public void addConfirmedRequestsAndViews(List<EventFullDto> events, RequestRepository requestRepository) {
         addConfirmedRequests(events, requestRepository);
         addViews(events);
+        addComments(events);
     }
 
     private void addConfirmedRequests(List<EventFullDto> events, RequestRepository requestRepository) {
@@ -105,5 +110,38 @@ public class EventUtils {
                 event.setViews(resultMap.getOrDefault((long) event.getId(), 0L));
             }
         }
+    }
+
+    private void addComments(List<EventFullDto> events) {
+        if (events == null || events.isEmpty()) {
+            return;
+        }
+
+        List<Comment> comments = commentRepository.findAllPublishedByEventIdIn(events
+                .stream()
+                .map(EventFullDto::getId)
+                .collect(Collectors.toList())
+        );
+
+        Map<Integer, List<Comment>> commentsMap = new HashMap<>();
+
+        comments.forEach(comment -> {
+            int eventId = comment.getEvent().getEventId();
+
+            if (!commentsMap.containsKey(eventId)) {
+                commentsMap.put(eventId, new ArrayList<>());
+            }
+
+            commentsMap.get(eventId).add(comment);
+        });
+
+        events.forEach(event -> {
+            if (commentsMap.containsKey(event.getId())) {
+                event.setComments(commentsMap.get(event.getId())
+                        .stream()
+                        .map(CommentMapper::commentToCommentShotDto)
+                        .collect(Collectors.toList()));
+            }
+        });
     }
 }
