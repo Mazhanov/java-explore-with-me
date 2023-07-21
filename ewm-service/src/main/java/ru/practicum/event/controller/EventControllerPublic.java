@@ -53,6 +53,4 @@ public class EventControllerPublic {
         log.info("event received = {}", eventFullDto);
         return eventFullDto;
     }
-
-
 }

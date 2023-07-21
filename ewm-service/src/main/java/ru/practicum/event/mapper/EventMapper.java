@@ -37,7 +37,7 @@ public class EventMapper {
     }
 
     public EventFullDto eventToEventFullDto(Event event) {
-        return EventFullDto.builder()
+        EventFullDto eventFullDto = EventFullDto.builder()
                 .id(event.getEventId())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
@@ -53,6 +53,8 @@ public class EventMapper {
                 .participantLimit(event.getParticipantLimit())
                 .requestModeration(event.getRequestModeration())
                 .build();
+
+        return eventFullDto;
     }
 
     public EventShortDto eventFullDtoToEventShotDto(EventFullDto eventDto) {
